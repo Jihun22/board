@@ -1,6 +1,7 @@
 package com.example.board.service;
 
 import com.example.board.dto.BoardDTO;
+
 import com.example.board.entity.BoardEntity;
 import com.example.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,8 @@ public class BoardService {
 
     public void save(BoardDTO boardDTO) {
         BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
-
         boardRepository.save(boardEntity);
+
 
 
     }

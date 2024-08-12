@@ -17,7 +17,7 @@ public class BoardEntity extends BaseEntity {
 
 
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 20, nullable = false)
     private  String boardWriter;
 
     @Column(unique = true)
@@ -38,7 +38,7 @@ public class BoardEntity extends BaseEntity {
         boardEntity.setBoardWriter(boardDTO.getBoardWriter());
         boardEntity.setBoardPass(boardDTO.getBoardPass());
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
-        boardEntity.setBoardContents(boardDTO.getBoardContent());
+        boardEntity.setBoardContents(boardDTO.getBoardContents());
         boardEntity.setBoardHits(0);
         return boardEntity;
     }

@@ -23,7 +23,7 @@ public class BoardDTO {
     private String boardTitle;
 
     //내용
-    private String boardContent;
+    private String boardContents;
 
     //조회수
     private int boardHits;
