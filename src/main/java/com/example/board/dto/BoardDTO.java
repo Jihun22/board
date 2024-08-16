@@ -36,16 +36,16 @@ public class BoardDTO {
     private LocalDateTime boardUpdateTime;
 
     public static BoardDTO toBoardDTO (BoardEntity boardEntity) {
-        BoardDTO boardDTO = new BoardDTO();
-        boardDTO.setId(boardDTO.getId());
-        boardDTO.setBoardWriter(boardEntity.getBoardWriter());
-        boardDTO.setBoardPass(boardEntity.getBoardPass());
-        boardDTO.setBoardTitle(boardEntity.getBoardTitle());
-        boardDTO.setBoardContents(boardEntity.getBoardContents());
-        boardDTO.setBoardHits(boardEntity.getBoardHits());
-        boardDTO.setBoardCreateTime(boardEntity.getCreatedTime());
-        boardDTO.setBoardUpdateTime(boardEntity.getUpdatedTime());
-        return boardDTO;
+      BoardDTO boardDTO = new BoardDTO();
+      boardDTO.setId(boardEntity.getId());
+      boardDTO.setBoardWriter(boardEntity.getBoardWriter());
+      boardDTO.setBoardPass(boardEntity.getBoardPass());
+      boardDTO.setBoardTitle(boardEntity.getBoardTitle());
+      boardDTO.setBoardContents(boardEntity.getBoardContents());
+      boardDTO.setBoardHits(boardEntity.getBoardHits());
+      boardDTO.setBoardCreateTime(boardEntity.getCreatedTime());
+      boardDTO.setBoardUpdateTime(boardEntity.getUpdatedTime());
+    return boardDTO;
     }
 
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -26,21 +27,16 @@ public class BoardController {
     }
 
     @PostMapping("/save")
-    public  String save(@ModelAttribute BoardDTO boardDTO) {
+    public String save(@ModelAttribute BoardDTO boardDTO) throws IOException {
         System.out.println("boardDTO = " + boardDTO);
         boardService.save(boardDTO);
-        return "index.html";
-        }
-
-        @GetMapping("/")
-    public String findAll(Model model) {
-        //DB에서 전체 게시글 데이터를 가져와서 list.html에 보여준다.
+        return "index";
+    }
+    @GetMapping("/")
+    public String findAll(Model model){
         List<BoardDTO> boardDTOList = boardService.findAll();
-        model.addAttribute("boardDTOList", boardDTOList);
+        model.addAttribute("boardList", boardDTOList);
         return "list";
-
-
-
-        }
+    }
     }
 
