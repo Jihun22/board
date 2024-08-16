@@ -24,19 +24,15 @@ public class BoardService {
         boardRepository.save(boardEntity);
 
 
-
     }
 
     public List<BoardDTO> findAll() {
         List<BoardEntity> boardEntityList = boardRepository.findAll();
         List<BoardDTO> boardDTOList = new ArrayList<>();
-        for (BoardEntity boardEntity : boardEntityList) {
+        for (BoardEntity boardEntity: boardEntityList) {
             boardDTOList.add(BoardDTO.toBoardDTO(boardEntity));
-
         }
-
         return boardDTOList;
-
-
     }
 }
+
