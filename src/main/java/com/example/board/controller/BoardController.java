@@ -42,13 +42,15 @@ public class BoardController {
     }
 
     @GetMapping("/{id}")
-    public String findById(@PathVariable Long id, Model model) {
+    public String findById(@PathVariable Long id, Model model ,@PageableDefault(page =1) Pageable pageable) {
         /*
         해당 게시글 조회수 올리고 게시글 데이터 가져와서 detail.html 에 출력
          */
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
+        /*댓글 목록 가져오기 */
         model.addAttribute("board", boardDTO);
+        model.addAttribute("page",pageable.getPageNumber());
         return "detail";
     }
 
@@ -80,7 +82,7 @@ public class BoardController {
         Page<BoardDTO> boardList = boardService.paging(pageable);
         int blockLimit = 3;
         int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
-        int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
+        int endPage = ((startPage+ blockLimit -1)< boardList.getTotalPages())? startPage + blockLimit -1 : boardList.getTotalPages();
 
         // page 갯수 20개
         // 현재 사용자가 3페이지

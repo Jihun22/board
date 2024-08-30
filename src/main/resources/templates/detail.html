@@ -33,10 +33,12 @@
 <button onclick="updateReq()">수정</button>
 <button onclick="deleteReq()">삭제</button>
 </body>
+
 <script th:inline="javascript">
-    const    listReq = () => {
+    const listReq = () => {
       console.log("상세조회 목록");
-      location.href ="/board";
+      const page = [[${page}]];
+      location.href ="/board/paging?page="+page;
 
     }
 
