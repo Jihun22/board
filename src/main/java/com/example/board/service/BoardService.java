@@ -33,11 +33,11 @@ public class BoardService {
 
     public void save(BoardDTO boardDTO) throws IOException {
         //파일 첨부 여부에 따라 로직 분리
-        if(boardDTO.getBoardFile().isEmpty()) {
+        if (boardDTO.getBoardFile().isEmpty()) {
             // 첨부 파일 없음.
             BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
             boardRepository.save(boardEntity);
-        }else {
+        } else {
             //첨부파일 있음
 
             /*
@@ -51,55 +51,62 @@ public class BoardService {
              7. board_file_table에 해당 데이터 save 처리
 
              */
-            MultipartFile boardFile = boardDTO.getBoardFile();  //1
-            String originalFilename = boardFile.getOriginalFilename(); //2
-            String storedFileName = System.currentTimeMillis() + "_" + originalFilename; //3
-//            String savePath ="C:/springboot_ing/" + storedFileName;   //윈도우
-            String savePath ="/Users/yangjihun/springboot_ing/" + storedFileName;  //mac 4
-            boardFile.transferTo(new File(savePath)); //5
-          BoardEntity boardEntity =  BoardEntity.toSaveFileEntity(boardDTO);
+            BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);
             Long saveId = boardRepository.save(boardEntity).getId();
             BoardEntity board = boardRepository.findById(saveId).get();
 
-            BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName);
-            boardFileRepository.save(boardFileEntity);
+            for (MultipartFile boardFile : boardDTO.getBoardFile()) {
+//            MultipartFile boardFile = boardDTO.getBoardFile();  //1
+                String originalFilename = boardFile.getOriginalFilename(); //2
+                String storedFileName = System.currentTimeMillis() + "_" + originalFilename; //3
+//            String savePath ="C:/springboot_ing/" + storedFileName;   //윈도우
+                String savePath = "/Users/yangjihun/springboot_ing/" + storedFileName;  //mac 4
+                boardFile.transferTo(new File(savePath)); //5
 
+
+                BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName);
+                boardFileRepository.save(boardFileEntity);
+
+            }
+
+
+        }
+    }
+        @Transactional
+        public List<BoardDTO> findAll () {
+            List<BoardEntity> boardEntityList = boardRepository.findAll();
+            List<BoardDTO> boardDTOList = new ArrayList<>();
+            for (BoardEntity boardEntity : boardEntityList) {
+                boardDTOList.add(BoardDTO.toBoardDTO(boardEntity));
+            }
+            return boardDTOList;
+        }
+
+        @Transactional
+        public void updateHits (Long id){
+
+            boardRepository.updateHits(id);
         }
 
 
-    }
-
-    public List<BoardDTO> findAll() {
-        List<BoardEntity> boardEntityList = boardRepository.findAll();
-        List<BoardDTO> boardDTOList = new ArrayList<>();
-        for (BoardEntity boardEntity: boardEntityList) {
-            boardDTOList.add(BoardDTO.toBoardDTO(boardEntity));
+        @Transactional
+        public BoardDTO findById (Long id) {
+            Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
+            if (optionalBoardEntity.isPresent()) {
+                BoardEntity boardEntity = optionalBoardEntity.get();
+                BoardDTO boardDTO = BoardDTO.toBoardDTO(boardEntity);
+                return boardDTO;
+            } else {
+                return null;
+            }
         }
-        return boardDTOList;
-    }
 
-    @Transactional
-    public void updateHits(Long id) {
-
-        boardRepository.updateHits(id);
-    }
-
-    public BoardDTO findById(Long id) {
-        Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
-        if(optionalBoardEntity.isPresent()) {
-            BoardEntity boardEntity = optionalBoardEntity.get();
-            BoardDTO boardDTO = BoardDTO.toBoardDTO(boardEntity);
-            return boardDTO;
-        }else{
-            return  null;
+        public BoardDTO update (BoardDTO boardDTO){
+            BoardEntity boardEntity = BoardEntity.toUpdateEntity(boardDTO);
+            boardRepository.save(boardEntity);
+            return findById(boardDTO.getId());
         }
-    }
 
-    public BoardDTO update(BoardDTO boardDTO) {
-        BoardEntity boardEntity = BoardEntity.toUpdateEntity(boardDTO);
-        boardRepository.save(boardEntity);
-        return  findById(boardDTO.getId());
-    }
 
     public void delete(Long id) {
         boardRepository.deleteById(id);
