@@ -51,10 +51,13 @@ public class BoardService {
              7. board_file_table에 해당 데이터 save 처리
 
              */
+            //부모 데이터 저장 ---------
             BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);
             Long saveId = boardRepository.save(boardEntity).getId();
             BoardEntity board = boardRepository.findById(saveId).get();
+            // 부모 데이터 -----------
 
+            //파일 여러개 상황
             for (MultipartFile boardFile : boardDTO.getBoardFile()) {
 //            MultipartFile boardFile = boardDTO.getBoardFile();  //1
                 String originalFilename = boardFile.getOriginalFilename(); //2
@@ -63,9 +66,9 @@ public class BoardService {
                 String savePath = "/Users/yangjihun/springboot_ing/" + storedFileName;  //mac 4
                 boardFile.transferTo(new File(savePath)); //5
 
-
                 BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName);
                 boardFileRepository.save(boardFileEntity);
+
 
             }
 

@@ -43,7 +43,7 @@ public class BoardDTO {
     //파일첨부
 
     private List<MultipartFile> boardFile; //save.html -> Controller 파일 담는 용
-    private  List<String> orginalFileName;   //원본 파일 이름
+    private  List<String> originalFileName;   //원본 파일 이름
     private  List<String>  storedFileName;    // 서버 저장용 파일 이름
     private  int fileAttached; // 파일 첨부 여부 ( 첨부 1, 미첨부 0)
 
@@ -81,11 +81,12 @@ public class BoardDTO {
           // and where b.id=?
 
           for (BoardFileEntity boardFileEntity : boardEntity.getBoardFileEntityList()) {
-             originalFileNameList.add(boardFileEntity.getOriginalFileName());
-             storedFileNameList.add(boardFileEntity.getStoredFileName());
-
+             originalFileNameList.add(boardFileEntity.getOriginalFileName()); //오리지널 리스트에 하나하나씩 담는다
+             storedFileNameList.add(boardFileEntity.getStoredFileName()); // 서버 파일 리스트에 담는다
+              System.out.println("getOriginalFileName:"+boardFileEntity.getOriginalFileName());
+              System.out.println("getStoredFileName:"+boardFileEntity.getStoredFileName());
           }
-          boardDTO.setOrginalFileName(originalFileNameList);
+          boardDTO.setOriginalFileName(originalFileNameList);
           boardDTO.setStoredFileName(storedFileNameList);
       }
     return boardDTO;
