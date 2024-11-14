@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name:test
+  servlet:
+    multipart:
+      #file upload size
+      max-file-size: 3MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/test?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
