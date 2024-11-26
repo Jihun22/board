@@ -13,7 +13,7 @@ public class CommentDTO {
 
     private Long id;
     private  String commentWriter;
-    private  String commentContent;
+    private  String commentContents;
     private  Long boardId;
     private LocalDateTime commentCreatedTime;
 
